@@ -1,0 +1,35 @@
+﻿Teree (Thirteen Court Piece) – Official Rules
+​Teree is a high-stakes, trick-taking card game played in partnerships. It combines the bidding mechanics of bridge with the "Double Sir" collection rule common in South Asian card games, all set against a "Tug-of-War" scoring system.
+​1. Setup & Players
+​Players: 4 players, divided into two teams of two. Partners sit directly across from each other.
+​Deck: A standard 52-card deck.
+​Card Ranking: Ace (Highest) > King > Queen > Jack > 10 > ... > 2 (Lowest).
+​2. The Bidding Phase (The "Call")
+​Dealing Part 1: The dealer distributes exactly 5 cards to each player.
+​The Bid: Starting from the player to the dealer's right, players bid the number of "Sirs" (hands/tricks) they believe their team can win out of 13.
+​The minimum bid is typically 7.
+​Players must outbid the previous caller to take the lead.
+​Winning the Bid: The highest bidder wins the right to declare the Trump (Rung) suit.
+​3. Declaring Trump & Final Deal
+​Trump Declaration: The winner of the bid chooses a suit based on their first 5 cards.
+​Dealing Part 2: The dealer then distributes the remaining 8 cards to each player, bringing everyone to a total of 13 cards.
+​4. Gameplay: The "Double Sir" Rule
+​Leading: The Trump Caller leads the first trick.
+​Following Suit: Players must follow the suit led. If they cannot, they may play a Trump card to win the trick (called "cutting") or discard another suit.
+​Winning a Hand (The Heap): Unlike standard games, a single trick win does not allow you to pick up the cards.
+​Cards remain in the center in a "Heap."
+​A team only collects the heap if the same player wins two consecutive tricks.
+​If the winner of the current trick is different from the winner of the previous one, the heap grows.
+​The 13th Trick: The winner of the final trick always collects whatever remains in the center heap.
+​5. The "13 Sar" (Grand Slam) Special Rule
+​If a player bids all 13 Sirs, the following special conditions apply:
+​Open Cards: The bidder’s teammate must lay all 13 of their cards face-up on the table for everyone to see.
+​Commander Mode: The bidder plays both their own hand and their teammate’s hand (deciding which of the teammate’s cards to play on their turn).
+​Zero Margin for Error: If the opponents win even a single trick, the bidding team loses the round.
+​6. Tug-of-War Scoring
+​The game is tracked on a linear scale of 52 points, starting from a neutral center.
+​Winning a Round: If the bidding team meets or exceeds their bid, they "pull" the center point toward their goal by the Bid Number.
+​Losing a Round: If the bidding team fails, the opposing team "pulls" the center point toward their goal by the Bid Number.
+​The 13-Sar Penalty: * If the bidder wins all 13, they pull 13 points.
+​If the bidder loses even one trick, the opponents pull 26 points (Double Penalty).
+​Winning the Game: The first team to reach a cumulative pull of 52 points wins the entire match.

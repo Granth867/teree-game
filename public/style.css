@@ -1,0 +1,1085 @@
+/* Minimalist CSS Styles for Teree */
+
+:root {
+  --bg-color: #0c0805; /* Deep wood core background */
+  --table-bg: #0b2214; /* Forest green felt background */
+  --panel-bg: rgba(26, 19, 13, 0.85); /* Mahogany panels with opacity */
+  --border-color: #2c1a0e; /* Dark wood panel border line */
+  --text-primary: #f5eedc; /* Warm cream text */
+  --text-secondary: #a89f91; /* Soft matte gold-gray text */
+  --accent-color: #d4af37; /* Royal gold */
+  --accent-active: #e6c280;
+  --btn-primary: #8a2525; /* Red wax/velvet button color */
+  --btn-primary-hover: #a63232;
+  --btn-secondary: #21150e; /* Wood button color */
+  --btn-secondary-hover: #2f2016;
+  /* Scalable card size based on screen height */
+  --card-height: 13.5vh;
+  --card-width: calc(var(--card-height) * 0.7);
+  --card-red: #bb2525;
+  --card-black: #1e1e1e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+  user-select: none;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
+
+#app {
+  height: 100%;
+  position: relative;
+}
+
+/* Common Screens */
+.screen {
+  display: none;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Login Screen */
+#login-screen {
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+}
+
+.login-card {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  padding: 40px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-card h1 {
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.form-group input {
+  width: 100%;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 12px 15px;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: var(--accent-color);
+}
+
+/* Buttons */
+.primary-btn {
+  width: 100%;
+  background-color: var(--btn-primary);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.primary-btn:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.secondary-btn {
+  background-color: var(--btn-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.secondary-btn:hover {
+  background-color: var(--btn-secondary-hover);
+}
+
+/* Lobby Screen */
+#lobby-screen {
+  background-color: var(--bg-color);
+  justify-content: center;
+  align-items: center;
+}
+
+.lobby-container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  border: 1px solid var(--border-color);
+  width: 90%;
+  max-width: 900px;
+  height: 80vh;
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lobby-main {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border-color);
+}
+
+.lobby-main h2 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.lobby-room-display {
+  color: var(--accent-color);
+}
+
+.lobby-desc {
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+}
+
+.players-list-container {
+  flex-grow: 1;
+}
+
+.players-list-container h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+}
+
+#players-list {
+  list-style: none;
+}
+
+#players-list li {
+  padding: 12px 15px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lobby-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.lobby-actions button {
+  flex: 1;
+}
+
+/* Chat Layout */
+.lobby-chat, .game-chat {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--bg-color);
+  height: 100%;
+}
+
+.lobby-chat h3, .game-chat h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 15px;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  background-color: var(--panel-bg);
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.chat-messages p {
+  margin-bottom: 8px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.chat-messages .system {
+  color: var(--accent-color);
+  font-style: italic;
+}
+
+.chat-messages .sender {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input-row input {
+  flex-grow: 1;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  outline: none;
+}
+
+.chat-input-row button {
+  background-color: var(--btn-primary);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chat-input-row button:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+/* Active Game Screen */
+#game-screen {
+  background-color: var(--bg-color);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  border-bottom: 4px solid #1c110a; /* Dark wood bevel */
+  background: linear-gradient(rgba(20, 15, 10, 0.45), rgba(20, 15, 10, 0.45)), url('/assets/wood_texture.png') repeat;
+  background-size: 250px;
+  height: 80px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 10;
+}
+
+.header-left h2 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #fbf6eb;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.trump-badge-container {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.trump-indicator-box {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #8e1f1f; /* Small wax seal style badge */
+  border: 1px solid #c59f37;
+  color: #ffdf00;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Score Board */
+.score-container {
+  flex-grow: 1;
+  max-width: 500px;
+  margin-left: 40px;
+}
+
+.score-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.team-label.team-0 {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.team-label.team-1 {
+  color: #7b9acc;
+  font-weight: bold;
+}
+
+.match-info {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.tug-of-war-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.tug-of-war-track {
+  position: relative;
+  flex-grow: 1;
+  height: 8px;
+  background: linear-gradient(to bottom, #d4af37 0%, #a67c1e 100%); /* Polished brass track */
+  border-radius: 4px;
+  border: 1px solid #7c5d15;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.tug-of-war-center-line {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  bottom: -4px;
+  width: 4px;
+  background-color: #3e1b0c; /* Wooden center peg hole */
+  border-radius: 2px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.tug-of-war-marker {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  background-color: #a62c2c; /* Red wax seal peg */
+  border: 2px solid #ffcccc;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 0.5s ease-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Game Layout Grid */
+.game-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  height: calc(100vh - 80px);
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #184c2d 0%, #0c2617 100%);
+  position: relative;
+  overflow: hidden;
+  /* Deep recessed card table indentation effect */
+  box-shadow: inset 10px 10px 25px rgba(0, 0, 0, 0.95), inset -10px -10px 25px rgba(0, 0, 0, 0.95);
+  border-top: 6px solid #1f140c; /* Beveled wood frame top */
+  border-right: 6px solid #1f140c; /* Beveled wood frame right */
+}
+
+/* Apply SVG filter texture as overlay to give it a organic fabric weave look */
+.table-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, #1a5632 0%, #0d2919 100%);
+  filter: url(#felt-noise-filter);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.playing-table {
+  position: relative;
+  width: 95%;
+  height: 95%;
+  max-width: 1300px;
+  max-height: 780px;
+  border: 3px double rgba(212, 175, 55, 0.4); /* Elegant double gold card line */
+  background-color: transparent; /* Show felt underneath */
+  border-radius: 16px; /* Rectangular shape card table with rounded corners */
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
+  z-index: 1; /* Sits on top of the noise layer */
+}
+
+/* Player Slots */
+.player-slot {
+  position: absolute;
+  display: flex;
+  flex-direction: column-reverse; /* All player slots render cards above the nameplate */
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  z-index: 5;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(26, 19, 13, 0.95); /* Matte mahogany */
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #3c2618; /* Wood frame */
+  color: #f5eedc; /* Cream text */
+  font-size: 0.88rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+  z-index: 10; /* Anchor capsule in front of cards */
+  position: relative;
+  margin-top: -14px; /* Pull capsule up to tuck under fanned cards */
+}
+
+.player-slot.active .player-info {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.45), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.dealer-star {
+  color: var(--accent-color);
+  display: none;
+}
+
+.is-dealer .dealer-star {
+  display: inline;
+}
+
+.turn-dot {
+  color: var(--accent-color);
+  display: none;
+}
+
+.active .turn-dot {
+  display: inline;
+  animation: pulse 1.2s infinite;
+}
+
+.tricks-pill {
+  font-size: 0.75rem;
+  background-color: #21150e; /* Dark wood backing */
+  border: 1px solid #3c2618;
+  padding: 2px 8px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+}
+
+/* Alignments of slots optimized for oval table layout */
+.slot-bottom {
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.slot-top {
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+}
+
+.slot-left {
+  left: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 140px;
+}
+
+.slot-right {
+  right: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 140px;
+}
+
+/* Center Heap - Blue Box playing area */
+.center-heap-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 460px; /* Horizontal playing area box */
+  height: 200px;
+  border: 2px solid rgba(74, 144, 226, 0.5); /* Clean blue box line */
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 20px rgba(74, 144, 226, 0.15), 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.center-instruction {
+  position: absolute;
+  right: 25px;
+  top: 25px; /* Positioned in the top-right corner to prevent slot overlapping */
+  width: 130px;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.35;
+  z-index: 5;
+}
+
+.heap-cards-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 320px; /* Confined to the left card-playing section of the blue box */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heap-card-wrapper .card {
+  width: calc(var(--card-width) * 0.72) !important;
+  height: calc(var(--card-height) * 0.72) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* Card Elements - Clean Minimalist White Cardstock style */
+.card {
+  width: var(--card-width);
+  height: var(--card-height);
+  border-radius: 6px;
+  position: relative;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.5);
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s, bottom 0.2s;
+  cursor: pointer;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Golden glow for active Trump cards in fanned hands */
+.card.trump-glow {
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.9), 0 0 4px rgba(212, 175, 55, 0.5);
+  border: 1.5px solid rgba(212, 175, 55, 0.9) !important;
+}
+
+.card.trump-glow:hover {
+  box-shadow: 0 0 18px rgba(212, 175, 55, 1), 0 0 8px rgba(212, 175, 55, 0.6);
+}
+
+/* Discarded/Heap Cards */
+.heap-card-wrapper {
+  position: absolute;
+  transition: transform 0.5s ease-out, opacity 0.5s;
+}
+
+.heap-card-owner {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  background: #21150e;
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #3c2618;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Hand rendering sizes */
+.hand-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 1; /* Render behind nameplate capsule */
+}
+
+.main-hand {
+  padding: 3vh 10px 4vh 10px; /* leaves room for hover pop up (3vh) and arch bend (4vh) */
+  height: calc(var(--card-height) + 8vh);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.main-hand::-webkit-scrollbar {
+  display: none;
+}
+
+.main-hand .card {
+  margin: 0 4px; /* fanning overlap handled dynamically in JS */
+}
+
+/* Teammate exposed / other player compact hands */
+.compact-hand {
+  justify-content: center;
+  overflow: visible;
+}
+
+.compact-hand .card {
+  width: calc(var(--card-width) * 0.6);
+  height: calc(var(--card-height) * 0.6);
+  margin: 0 calc(var(--card-width) * -0.16);
+  cursor: default;
+}
+
+.compact-hand .card-center-suit {
+  font-size: 1rem;
+}
+
+/* Custom Gold-Foiled Velvet Card Backs */
+.card-back {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+/* Right Panel (Chat & details) */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  border-left: 4px solid #1c110a; /* Dark wood bevel */
+  background: linear-gradient(rgba(18, 14, 10, 0.55), rgba(18, 14, 10, 0.55)), url('/assets/wood_texture.png') repeat;
+  background-size: 250px;
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 9;
+}
+
+.round-status-box {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.round-status-box h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 8px;
+  font-size: 0.85rem;
+}
+
+.status-grid div:nth-child(odd) {
+  color: var(--text-secondary);
+}
+
+.status-grid div:nth-child(even) {
+  font-weight: 500;
+  text-align: right;
+}
+
+/* Modals */
+.modal-overlay {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5); /* lighter overlay */
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+#bidding-modal, #trump-modal {
+  align-items: flex-end;
+  padding-bottom: 10px;
+  background-color: transparent; /* No dark overlay block! The rest of the table remains fully visible */
+  pointer-events: none; /* Allows clicks to pass through the background */
+}
+
+#bidding-modal .modal-content,
+#trump-modal .modal-content {
+  pointer-events: auto; /* Reacts to mouse clicks inside the bar itself */
+}
+
+/* Slide player hand up smoothly when bidding or choosing trump so cards sit directly above choices bar */
+#app:has(#bidding-modal.active) #slot-0,
+#app:has(#trump-modal.active) #slot-0 {
+  transform: translate(-50%, -50px);
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+/* Horizontal HUD Modal content */
+.horizontal-layout {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 95% !important;
+  max-width: 960px !important;
+  height: 75px !important;
+  padding: 10px 25px !important;
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+  border-radius: 6px;
+}
+
+.modal-text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.modal-text-col h2 {
+  font-size: 1rem !important;
+  margin-bottom: 2px !important;
+  text-align: left !important;
+  color: var(--accent-color);
+}
+
+.modal-text-col p {
+  font-size: 0.75rem !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 0 !important;
+  text-align: left !important;
+}
+
+.modal-buttons-col {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.bid-buttons-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 6px !important;
+  margin-bottom: 0 !important;
+}
+
+.bid-val-btn {
+  padding: 6px 12px !important;
+  font-size: 0.85rem !important;
+  width: auto !important;
+}
+
+.pass-btn {
+  padding: 6px 14px !important;
+  font-size: 0.85rem !important;
+}
+
+/* Trump Selection HUD styling */
+#trump-modal .trump-buttons-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 10px !important;
+}
+
+#trump-modal .trump-suit-btn {
+  padding: 6px 14px !important;
+  font-size: 0.85rem !important;
+}
+
+.modal-content {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.modal-content h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.modal-content p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.bid-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.bid-val-btn {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.bid-val-btn:hover {
+  background-color: var(--btn-secondary-hover);
+  border-color: var(--accent-color);
+}
+
+.bid-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.trump-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.trump-suit-btn {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.trump-suit-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-color);
+}
+
+.color-red {
+  color: var(--card-red);
+}
+
+.color-black {
+  color: #ffffff;
+}
+
+.outcome-details {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 20px 0;
+  background-color: var(--bg-color);
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+/* Animations & Keyframes */
+@keyframes pulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+/* Responsiveness overrides */
+@media(max-height: 700px) {
+  :root {
+    --card-width: 60px;
+    --card-height: 86px;
+  }
+  .playing-table {
+    max-height: 480px;
+  }
+}
+
+/* Leave/Exit Button Styles */
+.leave-btn {
+  background-color: #331515;
+  color: #ff8888;
+  border: 1px solid #552222;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.leave-btn:hover {
+  background-color: #551a1a;
+  color: #ff9999;
+}
+
+.leave-lobby-btn {
+  border-color: #552222 !important;
+  color: #ff8888 !important;
+}
+
+.leave-lobby-btn:hover {
+  background-color: #331515 !important;
+}
+
+/* Trump Puck Styles - Beautiful CSS-Only Red Wax Seal (Static on the right info panel of center UI) */
+.trump-puck {
+  position: absolute;
+  left: calc(50% + 150px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ca3b3b 0%, #a82727 45%, #7a1616 90%, #520b0b 100%);
+  border: 2px solid #5a0e0e;
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.55), 
+    inset 0 3px 6px rgba(255, 255, 255, 0.25), 
+    inset 0 -3px 6px rgba(0, 0, 0, 0.4),
+    /* Melting wax spill boundary ring */
+    0 0 0 3px rgba(168, 39, 39, 0.8),
+    0 0 0 4px #5a0e0e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 15;
+  transition: opacity 0.5s ease-out;
+  pointer-events: none;
+}
+
+/* Inner stamp section of the wax seal */
+.trump-puck::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #962020 0%, #6e1515 100%);
+  border: 1px solid #4a0909;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 1px 1px rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+.trump-puck.hidden {
+  display: none !important;
+  opacity: 0;
+  transform: scale(0.5) translate(-50%, -50%) !important;
+}
+
+.puck-suit-icon {
+  position: absolute;
+  z-index: 2;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #ffdf00; /* Gold engraving default */
+  text-shadow: -1px -1px 0px #500, 1px 1px 1px #000;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Cooldown Timer Modal Styles */
+.cooldown-timer-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #2a0c0c;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 15px 0;
+  border: 1px solid #4a1515;
+}
+
+.cooldown-progress {
+  height: 100%;
+  background: linear-gradient(to right, #d4af37, #ffdf00);
+  width: 100%;
+  transition: width 1s linear;
+  box-shadow: 0 0 6px rgba(255, 223, 0, 0.4);
+}
+
+.cooldown-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.cooldown-actions button {
+  flex: 1;
+}

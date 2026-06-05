@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teree – Thirteen Court Piece</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Modern Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    
+    <!-- Lobby Login View -->
+    <div id="login-screen" class="screen active">
+      <div class="login-card">
+        <h1>Teree</h1>
+        <p class="subtitle">Thirteen Court Piece (4 Players – Partnerships)</p>
+        
+        <div class="form-group">
+          <label for="username">Your Name</label>
+          <input type="text" id="username" placeholder="Enter name" autocomplete="off" maxlength="15">
+        </div>
+        
+        <div class="form-group">
+          <label for="room-id">Room Code</label>
+          <input type="text" id="room-id" placeholder="LOBBY1" autocomplete="off" maxlength="10">
+        </div>
+        
+        <button id="join-btn" class="primary-btn">Join Lobby</button>
+      </div>
+    </div>
+
+    <!-- Room Lobby View -->
+    <div id="lobby-screen" class="screen">
+      <div class="lobby-container">
+        <div class="lobby-main">
+          <h2>Room <span id="lobby-room-display">LOBBY1</span></h2>
+          <p class="lobby-desc">Waiting for 4 players to start the game...</p>
+          
+          <div class="players-list-container">
+            <h3>Connected Players</h3>
+            <ul id="players-list">
+              <!-- Rendered via JS -->
+            </ul>
+          </div>
+          
+          <div class="lobby-actions">
+            <button id="add-bot-btn" class="secondary-btn">Add Bot</button>
+            <button id="start-early-btn" class="primary-btn">Fill with Bots & Start</button>
+            <button id="leave-lobby-btn" class="secondary-btn leave-lobby-btn">Leave Lobby</button>
+          </div>
+        </div>
+
+        <div class="lobby-chat">
+          <h3>Lobby Chat</h3>
+          <div id="lobby-chat-messages" class="chat-messages"></div>
+          <div class="chat-input-row">
+            <input type="text" id="lobby-chat-input" placeholder="Type a message..." maxlength="100">
+            <button id="lobby-send-btn">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Game View -->
+    <div id="game-screen" class="screen">
+      <header class="game-header">
+        <div class="header-left">
+          <h2>Teree Game - Room <span id="game-room-display">LOBBY1</span></h2>
+          <div class="trump-badge-container">
+            Trump: <span id="trump-indicator" class="trump-indicator-box">None</span>
+            <button id="leave-game-btn" class="leave-btn">Leave Game</button>
+          </div>
+        </div>
+
+        <!-- Tug-of-War Scoreboard -->
+        <div class="score-container">
+          <div class="score-labels">
+            <span class="team-label team-0">Team A (You/Top)</span>
+            <span class="match-info" id="match-info-center">Tug of War Score: 26</span>
+            <span class="team-label team-1">Team B (Left/Right)</span>
+          </div>
+          <div class="tug-of-war-bar-container">
+            <div class="marker-min">Team B Wins</div>
+            <div class="tug-of-war-track">
+              <div class="tug-of-war-center-line"></div>
+              <div id="tug-of-war-marker" class="tug-of-war-marker" style="left: 50%;"></div>
+            </div>
+            <div class="marker-max">Team A Wins</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="game-layout">
+        <!-- Main Playing Area -->
+        <div class="table-container">
+          <div class="playing-table">
+            
+            <!-- Opponent Top (Partner - Player 2) -->
+            <div class="player-slot slot-top" id="slot-2">
+              <div class="player-info">
+                <span class="dealer-star" id="dealer-2">★</span>
+                <span class="player-name-text">Partner</span>
+                <span class="turn-dot">●</span>
+                <div class="tricks-pill">Sirs Won: <span id="tricks-won-2">0</span></div>
+              </div>
+              <div class="hand-container compact-hand" id="hand-2"></div>
+            </div>
+
+            <!-- Opponent Right (Player 1) -->
+            <div class="player-slot slot-right" id="slot-1">
+              <div class="player-info">
+                <span class="dealer-star" id="dealer-1">★</span>
+                <span class="player-name-text">Opponent Right</span>
+                <span class="turn-dot">●</span>
+                <div class="tricks-pill">Sirs Won: <span id="tricks-won-1">0</span></div>
+              </div>
+              <div class="hand-container compact-hand" id="hand-1"></div>
+            </div>
+
+            <!-- Opponent Left (Player 3) -->
+            <div class="player-slot slot-left" id="slot-3">
+              <div class="player-info">
+                <span class="dealer-star" id="dealer-3">★</span>
+                <span class="player-name-text">Opponent Left</span>
+                <span class="turn-dot">●</span>
+                <div class="tricks-pill">Sirs Won: <span id="tricks-won-3">0</span></div>
+              </div>
+              <div class="hand-container compact-hand" id="hand-3"></div>
+            </div>
+
+            <!-- Center Card Heap / Plays -->
+            <div class="center-heap-area">
+              <div class="center-instruction" id="center-instruction">Waiting...</div>
+              
+              <!-- Cards in heap -->
+              <div id="heap-cards" class="heap-cards-container">
+                <!-- Dynamically populated card elements with offsets -->
+              </div>
+            </div>
+
+            <!-- Trump Puck -->
+            <div id="trump-puck" class="trump-puck hidden">
+              <div class="puck-suit-icon" id="puck-suit-icon"></div>
+            </div>
+
+            <!-- Self Player Bottom (Player 0) -->
+            <div class="player-slot slot-bottom" id="slot-0">
+              <div class="player-info">
+                <span class="dealer-star" id="dealer-0">★</span>
+                <span class="player-name-text">You</span>
+                <span class="turn-dot">●</span>
+                <div class="tricks-pill">Sirs Won: <span id="tricks-won-0">0</span></div>
+              </div>
+              
+              <!-- Active cards in current player hand -->
+              <div class="hand-container main-hand" id="hand-0">
+                <!-- Cards render here -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Side Panel (Chat & Statistics) -->
+        <div class="right-panel">
+          <div class="round-status-box">
+            <h3>Round Details</h3>
+            <div class="status-grid">
+              <div>Bidding Winner:</div>
+              <div id="bid-winner-display">-</div>
+              <div>Current Bid:</div>
+              <div id="bid-value-display">-</div>
+              <div>Heap Size:</div>
+              <div id="heap-size-display">0 cards (0 Sirs)</div>
+              <div>Collected Team A:</div>
+              <div id="collected-a-display">0 Sirs</div>
+              <div>Collected Team B:</div>
+              <div id="collected-b-display">0 Sirs</div>
+            </div>
+          </div>
+
+          <div class="game-chat">
+            <h3>Chat Log</h3>
+            <div id="game-chat-messages" class="chat-messages"></div>
+            <div class="chat-input-row">
+              <input type="text" id="game-chat-input" placeholder="Type a message..." maxlength="100">
+              <button id="game-send-btn">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals & Overlays -->
+
+    <!-- 1. Bidding Modal -->
+    <div id="bidding-modal" class="modal-overlay">
+      <div class="modal-content horizontal-layout">
+        <div class="modal-text-col">
+          <h2>Place Your Bid</h2>
+          <p id="current-high-bid-info">Min bid is 7 sirs.</p>
+        </div>
+        <div class="modal-buttons-col">
+          <div class="bid-buttons-grid">
+            <button class="bid-val-btn" data-value="7">7</button>
+            <button class="bid-val-btn" data-value="8">8</button>
+            <button class="bid-val-btn" data-value="9">9</button>
+            <button class="bid-val-btn" data-value="10">10</button>
+            <button class="bid-val-btn" data-value="11">11</button>
+            <button class="bid-val-btn" data-value="12">12</button>
+            <button class="bid-val-btn" data-value="13">13</button>
+          </div>
+          <button id="bid-pass-btn" class="secondary-btn pass-btn">Pass</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Trump Selection Modal -->
+    <div id="trump-modal" class="modal-overlay">
+      <div class="modal-content horizontal-layout">
+        <div class="modal-text-col">
+          <h2>Choose Trump (Rung)</h2>
+          <p>Choose based on first 5 cards</p>
+        </div>
+        <div class="trump-buttons-grid">
+          <button class="trump-suit-btn color-red" data-suit="H">♥️ Hearts</button>
+          <button class="trump-suit-btn color-red" data-suit="D">♦️ Diamonds</button>
+          <button class="trump-suit-btn color-black" data-suit="S">♠️ Spades</button>
+          <button class="trump-suit-btn color-black" data-suit="C">♣️ Clubs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Round Outcome Modal -->
+    <div id="round-outcome-modal" class="modal-overlay">
+      <div class="modal-content text-center">
+        <h2 id="round-outcome-title">Round Over</h2>
+        <div id="round-outcome-details" class="outcome-details">
+          <!-- Text dynamically updated -->
+        </div>
+        <button id="next-round-btn" class="primary-btn">Next Round</button>
+      </div>
+    </div>
+
+    <!-- 4. Game Over Modal -->
+    <div id="game-over-modal" class="modal-overlay">
+      <div class="modal-content text-center">
+        <h2>Match Completed!</h2>
+        <h1 id="winner-team-display">Team A Wins!</h1>
+        <p>A team pulled the score scale all the way to 52 points.</p>
+        <button id="restart-match-btn" class="primary-btn">Restart Match</button>
+      </div>
+    </div>
+
+    <!-- 5. 13-Sar Cooldown Overlay -->
+    <div id="cooldown-modal" class="modal-overlay">
+      <div class="modal-content text-center">
+        <h2 id="cooldown-title">Grand Slam Opportunity (13 Sirs)</h2>
+        <p id="cooldown-desc">Would you like to upgrade your bid to 13? Opponents winning even 1 trick defeats you.</p>
+        <div class="cooldown-timer-bar">
+          <div id="cooldown-progress" class="cooldown-progress" style="width: 100%;"></div>
+        </div>
+        <p id="cooldown-seconds">Time remaining: 10s</p>
+        <div id="cooldown-buttons" class="cooldown-actions" style="display: none;">
+          <button id="call-13-btn" class="primary-btn">Call 13 Sirs</button>
+          <button id="skip-13-btn" class="secondary-btn">Play Standard</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SVG Filter for Felt Texture Noise -->
+  <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+    <filter id="felt-noise-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.12 0" />
+      <feBlend mode="multiply" in="SourceGraphic" />
+    </filter>
+  </svg>
+
+  <!-- Socket.io library -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
