@@ -55,6 +55,7 @@ const nextRoundBtn = document.getElementById('next-round-btn');
 const gameOverModal = document.getElementById('game-over-modal');
 const winnerTeamDisplay = document.getElementById('winner-team-display');
 const restartMatchBtn = document.getElementById('restart-match-btn');
+const cooldownModal = document.getElementById('cooldown-modal');
 
 // Local Game State Variables
 let myPlayerIdx = -1;
@@ -744,7 +745,6 @@ function handleModals(state) {
   }
 
   // 5. 13-Sar Cooldown Modal Handling
-  const cooldownModal = document.getElementById('cooldown-modal');
   const cooldownProgress = document.getElementById('cooldown-progress');
   const cooldownSeconds = document.getElementById('cooldown-seconds');
   const cooldownButtons = document.getElementById('cooldown-buttons');

@@ -239,9 +239,8 @@ function checkAndRunBotCooldown(room) {
         console.log(`Bot ${player.name} called Teree!`);
         upgradeTo13Sar(room, playerIdx);
       } else if (g.bidWinnerIdx === playerIdx) {
-        // Only the original bid winner decides to skip/end the cooldown
+        // Log skip but do not call endCooldown(room) early to let the timer run out naturally for human players
         console.log(`Bot ${player.name} skipped 13-Sar.`);
-        endCooldown(room);
       }
     }, 1500 + playerIdx * 200);
   });
