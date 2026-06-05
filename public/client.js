@@ -1,9 +1,16 @@
 const socket = io();
 
 // UI Elements - Screens
+const landingScreen = document.getElementById('landing-screen');
 const loginScreen = document.getElementById('login-screen');
 const lobbyScreen = document.getElementById('lobby-screen');
 const gameScreen = document.getElementById('game-screen');
+
+// UI Elements - Landing Page Buttons
+const playMenuBtn = document.getElementById('play-menu-btn');
+const howToPlayBtn = document.getElementById('how-to-play-btn');
+const backToLandingBtn = document.getElementById('back-to-landing-btn');
+const soloPlayBtn = document.getElementById('solo-play-btn');
 
 // UI Elements - Login Form
 const usernameInput = document.getElementById('username');
@@ -52,6 +59,7 @@ const restartMatchBtn = document.getElementById('restart-match-btn');
 // Local Game State Variables
 let myPlayerIdx = -1;
 let currentGameState = null;
+let isSoloGame = false;
 
 // Suit symbols dictionary
 const SUIT_SYMBOLS = { H: '♥️', D: '♦️', C: '♣️', S: '♠️' };
@@ -82,12 +90,43 @@ function getCardImageUrl(card) {
 // Initialize Username with a random guest name
 usernameInput.value = `Player_${Math.floor(100 + Math.random() * 900)}`;
 
+// Landing Page Navigation Event Listeners
+playMenuBtn.addEventListener('click', () => {
+  landingScreen.classList.remove('active');
+  loginScreen.classList.add('active');
+});
+
+howToPlayBtn.addEventListener('click', () => {
+  const rulesSec = document.getElementById('rules-section');
+  if (rulesSec) {
+    rulesSec.scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+backToLandingBtn.addEventListener('click', () => {
+  loginScreen.classList.remove('active');
+  landingScreen.classList.add('active');
+});
+
+soloPlayBtn.addEventListener('click', () => {
+  const name = usernameInput.value.trim();
+  if (!name) return alert('Please enter a name');
+  
+  const soloRoomId = 'SOLO_' + Math.floor(1000 + Math.random() * 9000);
+  isSoloGame = true;
+  
+  socket.emit('join_room', { roomId: soloRoomId, playerName: name });
+  lobbyRoomDisplay.textContent = soloRoomId;
+  gameRoomDisplay.textContent = soloRoomId;
+});
+
 // Lobby / Login Event Listeners
 joinBtn.addEventListener('click', () => {
   const name = usernameInput.value.trim();
   const room = roomIdInput.value.trim().toUpperCase() || 'LOBBY1';
   if (!name) return alert('Please enter a name');
   
+  isSoloGame = false;
   socket.emit('join_room', { roomId: room, playerName: name });
   lobbyRoomDisplay.textContent = room;
   gameRoomDisplay.textContent = room;
@@ -115,10 +154,11 @@ leaveLobbyBtn.addEventListener('click', () => {
   if (confirm('Are you sure you want to leave the lobby?')) {
     socket.emit('leave_room');
     lobbyScreen.classList.remove('active');
-    loginScreen.classList.add('active');
+    landingScreen.classList.add('active');
     clearAllModals();
     myPlayerIdx = -1;
     currentGameState = null;
+    isSoloGame = false;
   }
 });
 
@@ -127,10 +167,11 @@ leaveGameBtn.addEventListener('click', () => {
   if (confirm('Are you sure you want to leave the game? This will replace you with a bot.')) {
     socket.emit('leave_room');
     gameScreen.classList.remove('active');
-    loginScreen.classList.add('active');
+    landingScreen.classList.add('active');
     clearAllModals();
     myPlayerIdx = -1;
     currentGameState = null;
+    isSoloGame = false;
   }
 });
 
@@ -203,6 +244,19 @@ socket.on('error_message', (msg) => {
 
 socket.on('room_players_update', (players) => {
   loginScreen.classList.remove('active');
+  landingScreen.classList.remove('active');
+
+  if (isSoloGame && players.length === 1) {
+    // Automatically trigger filling with bots and starting
+    socket.emit('start_game_early');
+    return;
+  }
+
+  // If in a solo game setup, do not show the lobby screen at all
+  if (isSoloGame && players.length < 4) {
+    return;
+  }
+
   lobbyScreen.classList.add('active');
   gameScreen.classList.remove('active');
 
@@ -233,6 +287,7 @@ socket.on('game_state_update', (state) => {
 
   // Move from Lobby to Game Screen if active
   if (state.status !== 'LOBBY') {
+    landingScreen.classList.remove('active');
     loginScreen.classList.remove('active');
     lobbyScreen.classList.remove('active');
     gameScreen.classList.add('active');

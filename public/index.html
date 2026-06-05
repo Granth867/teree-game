@@ -13,23 +13,94 @@
 <body>
   <div id="app">
     
-    <!-- Lobby Login View -->
-    <div id="login-screen" class="screen active">
+    <!-- Landing Screen -->
+    <div id="landing-screen" class="screen active">
+      <!-- Floating Background Suits -->
+      <div class="landing-bg-suits">
+        <span class="floating-suit font-red">♥</span>
+        <span class="floating-suit font-black">♠</span>
+        <span class="floating-suit font-red">♦</span>
+        <span class="floating-suit font-black">♣</span>
+      </div>
+
+      <div class="landing-container">
+        <!-- Hero Section -->
+        <header class="landing-hero">
+          <div class="hero-logo-container">
+            <img src="/assets/red_wax_seal_puck.png" class="hero-logo-seal" alt="Teree Wax Seal">
+            <h1 class="landing-title">TEREE</h1>
+          </div>
+          <p class="landing-tagline">The Art of Thirteen Court Piece</p>
+          <p class="landing-desc">
+            A premium, high-stakes multiplayer card game of partnership strategy, bidding, and a tense Tug-of-War match collection.
+          </p>
+          <div class="landing-actions">
+            <button id="play-menu-btn" class="primary-btn landing-cta-btn">Enter Table</button>
+            <button id="how-to-play-btn" class="secondary-btn landing-cta-btn">How to Play</button>
+          </div>
+        </header>
+
+        <!-- Interactive Rules Section -->
+        <section id="rules-section" class="landing-rules">
+          <h2 class="section-title">Game Mechanics & Rules</h2>
+          <div class="rules-grid">
+            <div class="rule-card">
+              <div class="rule-badge">👥</div>
+              <h3>2v2 Partnerships</h3>
+              <p>Play in partnerships. Partners sit opposite each other. Formulate tricks and collaborate closely to dominate the table.</p>
+            </div>
+            <div class="rule-card">
+              <div class="rule-badge">⚔️</div>
+              <h3>The Double Sir Heap</h3>
+              <p>Won tricks remain on the table in a central Heap. A team only captures the entire Heap if the same player wins two consecutive tricks!</p>
+            </div>
+            <div class="rule-card">
+              <div class="rule-badge">⚖️</div>
+              <h3>Tug-of-War Score</h3>
+              <p>Score moves dynamically along a 52-point scale. Meeting your bid pulls points to your team; failing pushes points to the opponents.</p>
+            </div>
+            <div class="rule-card">
+              <div class="rule-badge">📣</div>
+              <h3>Bidding & Trump</h3>
+              <p>Bid the number of tricks (7 to 12) you can win. The highest bidder selects the Trump suit (Rung) based on their first 5 cards.</p>
+            </div>
+            <div class="rule-card highlight-card">
+              <div class="rule-badge">⚡</div>
+              <h3>13-Sar Grand Slam</h3>
+              <p>A high-risk 13-trick bid. The partner's hand is exposed, and the bidder controls both. Opponents winning even 1 trick results in instant loss!</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Lobby Login/Setup View -->
+    <div id="login-screen" class="screen">
       <div class="login-card">
-        <h1>Teree</h1>
-        <p class="subtitle">Thirteen Court Piece (4 Players – Partnerships)</p>
+        <button id="back-to-landing-btn" class="back-to-menu-btn">← Back to Menu</button>
+        <h1>Game Setup</h1>
+        <p class="subtitle">Select your play style to begin</p>
         
-        <div class="form-group">
-          <label for="username">Your Name</label>
-          <input type="text" id="username" placeholder="Enter name" autocomplete="off" maxlength="15">
+        <!-- Game Modes -->
+        <div class="setup-modes">
+          <button id="solo-play-btn" class="primary-btn solo-launch-btn">⚡ Play Solo vs. Bots</button>
+          
+          <div class="mode-separator">
+            <span>or play with friends</span>
+          </div>
+
+          <div class="form-group">
+            <label for="username">Your Name</label>
+            <input type="text" id="username" placeholder="Enter name" autocomplete="off" maxlength="15">
+          </div>
+          
+          <div class="form-group">
+            <label for="room-id">Room Code</label>
+            <input type="text" id="room-id" placeholder="LOBBY1" autocomplete="off" maxlength="10">
+          </div>
+          
+          <button id="join-btn" class="primary-btn">Join / Create Lobby</button>
         </div>
-        
-        <div class="form-group">
-          <label for="room-id">Room Code</label>
-          <input type="text" id="room-id" placeholder="LOBBY1" autocomplete="off" maxlength="10">
-        </div>
-        
-        <button id="join-btn" class="primary-btn">Join Lobby</button>
       </div>
     </div>
 
