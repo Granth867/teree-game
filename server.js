@@ -222,29 +222,32 @@ function dealPart2(room) {
 function checkAndRunBotCooldown(room) {
   const g = room.gameState;
   if (g.status !== 'COOLDOWN') return;
-  const bidder = room.players[g.bidWinnerIdx];
-  if (!bidder || !bidder.isBot) return;
 
-  setTimeout(() => {
-    if (g.status !== 'COOLDOWN') return;
-    const hand = g.hands[g.bidWinnerIdx];
-    const trumpCards = hand.filter(c => c.suit === g.trumpSuit);
-    const hasAce = trumpCards.some(c => c.value === 14);
-    const hasKing = trumpCards.some(c => c.value === 13);
-    const otherAces = hand.filter(c => c.suit !== g.trumpSuit && c.value === 14).length;
-    
-    // Heuristic: Bot upgrades if it has 7+ trumps including Ace & King, and 2 other Aces
-    if (trumpCards.length >= 7 && hasAce && hasKing && otherAces >= 2) {
-      console.log(`Bot ${bidder.name} upgraded to 13-Sar!`);
-      upgradeTo13Sar(room);
-    } else {
-      console.log(`Bot ${bidder.name} skipped 13-Sar.`);
-      endCooldown(room);
-    }
-  }, 2200); // decide after 2.2 seconds
+  room.players.forEach((player, playerIdx) => {
+    if (!player.isBot) return;
+
+    setTimeout(() => {
+      if (g.status !== 'COOLDOWN') return;
+      const hand = g.hands[playerIdx];
+      const trumpCards = hand.filter(c => c.suit === g.trumpSuit);
+      const hasAce = trumpCards.some(c => c.value === 14);
+      const hasKing = trumpCards.some(c => c.value === 13);
+      const otherAces = hand.filter(c => c.suit !== g.trumpSuit && c.value === 14).length;
+      
+      // Heuristic: Bot upgrades if it has 7+ trumps including Ace & King, and 2 other Aces
+      if (trumpCards.length >= 7 && hasAce && hasKing && otherAces >= 2) {
+        console.log(`Bot ${player.name} called Teree!`);
+        upgradeTo13Sar(room, playerIdx);
+      } else if (g.bidWinnerIdx === playerIdx) {
+        // Only the original bid winner decides to skip/end the cooldown
+        console.log(`Bot ${player.name} skipped 13-Sar.`);
+        endCooldown(room);
+      }
+    }, 1500 + playerIdx * 200);
+  });
 }
 
-function upgradeTo13Sar(room) {
+function upgradeTo13Sar(room, callerIdx) {
   const g = room.gameState;
   if (g.status !== 'COOLDOWN') return;
   
@@ -253,13 +256,14 @@ function upgradeTo13Sar(room) {
     room.cooldownTimerId = null;
   }
   
+  g.bidWinnerIdx = callerIdx;
   g.highestBid = 13;
   g.is13Sar = true;
-  g.status = 'PLAYING';
-  g.currentTurnIdx = g.bidWinnerIdx;
+  g.status = 'TRUMP_SELECTION'; // Go to Trump Selection for the Teree caller!
+  g.currentTurnIdx = callerIdx;
   
   sendStateToRoom(room);
-  checkAndRunBotPlay(room);
+  checkAndRunBotTrumpSelection(room);
 }
 
 function endCooldown(room) {
@@ -381,7 +385,16 @@ function processTrumpSelection(room, playerIdx, suit) {
     g.is13Sar = true;
   }
 
-  dealPart2(room);
+  // If cards are already dealt (hands have 13 cards), start playing directly
+  if (g.hands[0] && g.hands[0].length === 13) {
+    g.status = 'PLAYING';
+    g.currentTurnIdx = g.bidWinnerIdx;
+    
+    sendStateToRoom(room);
+    checkAndRunBotPlay(room);
+  } else {
+    dealPart2(room);
+  }
 }
 
 function checkAndRunBotPlay(room) {
@@ -517,7 +530,6 @@ function resolveTrick(room) {
   
   // Determine winner of the 4-card trick
   const winnerIdx = determineTrickWinner(g.currentTrick, g.trumpSuit, g.leadSuit);
-  g.tricksWon[winnerIdx]++;
   g.trickCount++;
 
   // Add the 4 played cards from current trick to the heap
@@ -559,6 +571,7 @@ function resolveTrick(room) {
     // Total tricks in heap = heap.length / 4.
     const tricksInHeap = g.heap.length / 4;
     g.tricksCollected[collectingTeam] += tricksInHeap;
+    g.tricksWon[winnerIdx] += tricksInHeap; // Increment individual tricks won only when they actually collect the heap!
 
     // Clear the heap
     // In frontend, we will animate cards flying to the collectingTeam
@@ -918,8 +931,8 @@ io.on('connection', (socket) => {
     for (const roomId in rooms) {
       const room = rooms[roomId];
       const playerIdx = room.players.findIndex(p => p.id === socket.id);
-      if (playerIdx !== -1 && room.gameState?.status === 'COOLDOWN' && room.gameState.bidWinnerIdx === playerIdx) {
-        upgradeTo13Sar(room);
+      if (playerIdx !== -1 && room.gameState?.status === 'COOLDOWN') {
+        upgradeTo13Sar(room, playerIdx);
         break;
       }
     }

@@ -183,6 +183,7 @@ call13Btn.addEventListener('click', () => {
 });
 skip13Btn.addEventListener('click', () => {
   socket.emit('skip_13_cooldown');
+  cooldownModal.classList.remove('active');
 });
 
 // Bidding Event Listeners
@@ -372,8 +373,17 @@ function updatePlayerInfoSlots(state) {
         slotEl.classList.remove('is-dealer');
       }
 
-      // Active player turn indicator
-      if (state.currentTurnIdx === actualPlayerIdx && state.status === 'PLAYING') {
+      // Active player turn indicator across all phases
+      let isTurn = false;
+      if (state.status === 'BIDDING') {
+        isTurn = (state.currentBidderIdx === actualPlayerIdx);
+      } else if (state.status === 'TRUMP_SELECTION' || state.status === 'COOLDOWN') {
+        isTurn = (state.bidWinnerIdx === actualPlayerIdx);
+      } else if (state.status === 'PLAYING') {
+        isTurn = (state.currentTurnIdx === actualPlayerIdx);
+      }
+      
+      if (isTurn) {
         slotEl.classList.add('active');
       } else {
         slotEl.classList.remove('active');
@@ -381,6 +391,26 @@ function updatePlayerInfoSlots(state) {
 
       // Individual Sirs/tricks won (just for reference)
       document.getElementById(`tricks-won-${sIdx}`).textContent = state.tricksWon[actualPlayerIdx];
+
+      // Find the player's bid (show bids throughout the game)
+      const bidBadgeEl = document.getElementById(`bid-badge-${sIdx}`);
+      if (bidBadgeEl) {
+        const showBids = (state.status !== 'LOBBY');
+        const playerBidObj = showBids ? state.bids.find(b => b.playerIdx === actualPlayerIdx) : null;
+        if (playerBidObj) {
+          if (playerBidObj.bid === 0) {
+            bidBadgeEl.textContent = 'Pass';
+            bidBadgeEl.className = 'bid-badge pass';
+            bidBadgeEl.style.display = 'inline-block';
+          } else {
+            bidBadgeEl.textContent = `Bid: ${playerBidObj.bid}`;
+            bidBadgeEl.className = 'bid-badge active-bid';
+            bidBadgeEl.style.display = 'inline-block';
+          }
+        } else {
+          bidBadgeEl.style.display = 'none';
+        }
+      }
     }
   }
 }
@@ -427,9 +457,16 @@ function renderHands(state) {
 
     if (!hand) continue;
 
+    // Apply special unfolded styling to exposed teammate hands
+    handContainer.classList.remove('unfolded-hand');
+    const isExposedTeammate = (state.is13Sar && actualPlayerIdx === (state.bidWinnerIdx + 2) % 4);
+    if (isExposedTeammate) {
+      handContainer.classList.add('unfolded-hand');
+    }
+
     // Compact face-down hands for opponents (slots 1, 2, 3) to at most 5 cards as representation.
     // Decrease the cards when they go below 5.
-    if (sIdx !== 0 && hand.length > 5 && hand.every(card => card.hidden)) {
+    if (sIdx !== 0 && hand.length > 5 && hand.every(card => card.hidden) && !isExposedTeammate) {
       hand = hand.slice(0, 5);
     }
 
@@ -714,18 +751,10 @@ function handleModals(state) {
 
   if (state.status === 'COOLDOWN') {
     cooldownModal.classList.add('active');
-    const isMyChoice = (state.bidWinnerIdx === myPlayerIdx);
-    const bidderName = state.players[state.bidWinnerIdx]?.name || 'Bid Winner';
-    
-    if (isMyChoice) {
-      document.getElementById('cooldown-title').textContent = "Grand Slam Opportunity (13 Sirs)";
-      document.getElementById('cooldown-desc').textContent = "Would you like to upgrade your bid to 13? Opponents winning even 1 trick defeats you.";
-      cooldownButtons.style.display = 'flex';
-    } else {
-      document.getElementById('cooldown-title').textContent = "Waiting for Bid Winner...";
-      document.getElementById('cooldown-desc').textContent = `${bidderName} is deciding whether to call 13 Sirs (Grand Slam).`;
-      cooldownButtons.style.display = 'none';
-    }
+    // All players have the option to call Teree
+    document.getElementById('cooldown-title').textContent = "Grand Slam Opportunity (13 Sirs)";
+    document.getElementById('cooldown-desc').textContent = "Would you like to call Teree (13 Sirs)? The player who calls Teree chooses the Trump suit, and opponents winning even 1 trick defeats your team.";
+    cooldownButtons.style.display = 'flex';
     
     cooldownSeconds.textContent = `Time remaining: ${state.cooldownTimeLeft}s`;
     cooldownProgress.style.width = `${(state.cooldownTimeLeft / 10) * 100}%`;

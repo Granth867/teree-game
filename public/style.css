@@ -1445,3 +1445,57 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* Bid Badge Styles */
+.bid-badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-shadow: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.bid-badge.active-bid {
+  background-color: var(--accent-color);
+  color: #0c0805;
+  border: 1px solid #ffdf00;
+}
+
+.bid-badge.pass {
+  background-color: #332218;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+/* Unfolded Exposed Teammate Hand Styles */
+.unfolded-hand {
+  border: 1.5px dashed var(--accent-color) !important;
+  border-radius: 8px;
+  background-color: rgba(212, 175, 55, 0.08);
+  padding: 6px 12px;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+  display: flex !important;
+  gap: 5px !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 90%;
+  overflow: visible !important;
+}
+
+.unfolded-hand .card {
+  width: calc(var(--card-width) * 0.8) !important;
+  height: calc(var(--card-height) * 0.8) !important;
+  margin: 0 !important; /* Reset overlap margin */
+  transition: transform 0.2s;
+  cursor: pointer !important; /* Make cards look clickable when you play them */
+}
+
+.unfolded-hand .card:hover {
+  transform: translateY(-10px) scale(1.1) !important;
+  z-index: 100 !important;
+}
