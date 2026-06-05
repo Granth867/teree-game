@@ -258,7 +258,7 @@ function upgradeTo13Sar(room, callerIdx) {
   
   g.bidWinnerIdx = callerIdx;
   g.highestBid = 13;
-  g.is13Sar = true;
+  g.is13Sar = false; // Delay teammate card reveal until after the Trump suit is chosen!
   g.status = 'TRUMP_SELECTION'; // Go to Trump Selection for the Teree caller!
   g.currentTurnIdx = callerIdx;
   

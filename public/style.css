@@ -633,6 +633,12 @@ body {
 /* Discarded/Heap Cards */
 .heap-card-wrapper {
   position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--card-width) * 0.72);
+  height: calc(var(--card-height) * 0.72);
+  margin-left: calc(var(--card-width) * -0.36);
+  margin-top: calc(var(--card-height) * -0.36);
   transition: transform 0.5s ease-out, opacity 0.5s;
 }
 
